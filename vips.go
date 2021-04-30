@@ -59,6 +59,10 @@ type vipsSaveOptions struct {
 	Palette        bool
 }
 
+type vipsReadOptions struct {
+	DPI C.double
+}
+
 type vipsWatermarkOptions struct {
 	Width       C.int
 	DPI         C.int
@@ -352,6 +356,10 @@ func vipsWatermark(image *C.VipsImage, w Watermark) (*C.VipsImage, error) {
 }
 
 func vipsRead(buf []byte) (*C.VipsImage, ImageType, error) {
+	return vipsReadWithOptions(buf, Options{})
+}
+
+func vipsReadWithOptions(buf []byte, o Options) (*C.VipsImage, ImageType, error) {
 	var image *C.VipsImage
 	imageType := vipsImageType(buf)
 
@@ -362,7 +370,8 @@ func vipsRead(buf []byte) (*C.VipsImage, ImageType, error) {
 	length := C.size_t(len(buf))
 	imageBuf := unsafe.Pointer(&buf[0])
 
-	err := C.vips_init_image(imageBuf, length, C.int(imageType), &image)
+	opts := vipsReadOptions{DPI: C.double(o.DPI)}
+	err := C.vips_init_image(imageBuf, length, C.int(imageType), &image, (*C.Options)(unsafe.Pointer(&opts)))
 	if err != 0 {
 		return nil, UNKNOWN, catchVipsError()
 	}

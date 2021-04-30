@@ -177,6 +177,12 @@ func (i *Image) Convert(t ImageType) ([]byte, error) {
 	return i.Process(options)
 }
 
+// ConvertWithOptions converts image to another format and allows Options to be passed in.
+func (i *Image) ConvertWithOptions(t ImageType, o Options) ([]byte, error) {
+	o.Type = t
+	return i.Process(o)
+}
+
 // Colourspace performs a color space conversion bsaed on the given interpretation.
 func (i *Image) Colourspace(c Interpretation) ([]byte, error) {
 	options := Options{Interpretation: c}
