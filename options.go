@@ -227,6 +227,7 @@ type Options struct {
 	InputICC       string
 	Palette        bool
 	DPI            float64
+	PageNum        int
 	// Speed defines the AVIF encoders CPU effort. Valid values are 0-8.
 	Speed int
 

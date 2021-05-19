@@ -59,6 +59,7 @@ typedef struct {
 
 typedef struct {
 	double DPI;
+	int    PageNum;
 } Options;
 
 static unsigned long
@@ -450,7 +451,7 @@ vips_init_image (void *buf, size_t len, int imageType, VipsImage **out, Options 
 	} else if (imageType == GIF) {
 		code = vips_gifload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, NULL);
 	} else if (imageType == PDF) {
-		code = vips_pdfload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, "dpi", opts->DPI, NULL);
+		code = vips_pdfload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, "dpi", opts->DPI, "page", opts->PageNum, NULL);
 	} else if (imageType == SVG) {
 		code = vips_svgload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, NULL);
 #endif
