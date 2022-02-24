@@ -357,7 +357,8 @@ func vipsWatermark(image *C.VipsImage, w Watermark) (*C.VipsImage, error) {
 }
 
 func vipsRead(buf []byte) (*C.VipsImage, ImageType, error) {
-	return vipsReadWithOptions(buf, Options{})
+	// DPI of 0 is not a valid option, so we default to the best next thing.
+	return vipsReadWithOptions(buf, Options{DPI: 1})
 }
 
 func vipsReadWithOptions(buf []byte, o Options) (*C.VipsImage, ImageType, error) {
